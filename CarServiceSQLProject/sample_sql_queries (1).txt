@@ -1,0 +1,77 @@
+SAMPLE SQL QUERIES - CAR GARAGE DATABASE
+=========================================
+
+1. Display all customers
+SELECT *
+FROM CUSTOMER;
+
+
+2. Find all Skoda cars
+SELECT RegNum, Make, Model, Manufacture
+FROM CAR
+WHERE Make = 'Skoda';
+
+
+3. Find cars manufactured after 2016
+SELECT RegNum, Make, Model, Manufacture
+FROM CAR
+WHERE Manufacture > 2016
+ORDER BY Manufacture DESC;
+
+
+4. Find customers without an email address
+SELECT CusID, Forename, Surname, PhoneNo
+FROM CUSTOMER
+WHERE Email IS NULL;
+
+
+5. Find all MOT check-ups
+SELECT ServiceID, DropOffDate, DropOffTime, WorkDescription, RegNum
+FROM SERVICE
+WHERE WorkDescription = 'MOT check-up'
+ORDER BY DropOffDate;
+
+
+6. Show each car alongside its owner's name
+SELECT CAR.RegNum, CAR.Make, CAR.Model,
+       CUSTOMER.Forename, CUSTOMER.Surname
+FROM CAR
+JOIN CUSTOMER ON CAR.CusID = CUSTOMER.CusID
+ORDER BY CUSTOMER.Surname;
+
+
+7. Show service records with car details
+SELECT SERVICE.ServiceID, SERVICE.DropOffDate,
+       SERVICE.WorkDescription, SERVICE.Mileage,
+       CAR.RegNum, CAR.Make, CAR.Model
+FROM SERVICE
+JOIN CAR ON SERVICE.RegNum = CAR.RegNum
+ORDER BY SERVICE.DropOffDate;
+
+
+8. Show which mechanics worked on each service
+SELECT PERFORMS.ServiceID, MECHANIC.Forename,
+       MECHANIC.Surname, MECHANIC.Grade,
+       PERFORMS.TimeOfService
+FROM PERFORMS
+JOIN MECHANIC ON PERFORMS.MechanicID = MECHANIC.MechanicID
+ORDER BY PERFORMS.ServiceID;
+
+
+9. Count the number of cars owned by each customer
+SELECT CUSTOMER.CusID, CUSTOMER.Forename, CUSTOMER.Surname,
+       COUNT(CAR.RegNum) AS NumberOfCars
+FROM CUSTOMER
+LEFT JOIN CAR ON CUSTOMER.CusID = CAR.CusID
+GROUP BY CUSTOMER.CusID, CUSTOMER.Forename, CUSTOMER.Surname
+ORDER BY NumberOfCars DESC;
+
+
+10. Find cars that have had more than one service
+SELECT CAR.RegNum, CAR.Make, CAR.Model,
+       COUNT(SERVICE.ServiceID) AS NumberOfServices
+FROM CAR
+JOIN SERVICE ON CAR.RegNum = SERVICE.RegNum
+GROUP BY CAR.RegNum, CAR.Make, CAR.Model
+HAVING COUNT(SERVICE.ServiceID) > 1
+ORDER BY NumberOfServices DESC;
