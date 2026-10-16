@@ -1,6 +1,3 @@
-SAMPLE SQL QUERIES - CAR GARAGE DATABASE
-=========================================
-
 1. Display all customers
 SELECT *
 FROM CUSTOMER;
