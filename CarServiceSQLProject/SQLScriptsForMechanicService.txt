@@ -1,0 +1,237 @@
+CREATE TABLE CUSTOMER (
+    CusID        VARCHAR(10),
+    Forename     VARCHAR(50),
+    Surname      VARCHAR(50),
+    Email        VARCHAR(100),
+    PhoneNo      VARCHAR(20),
+    CONSTRAINT PK_Customer PRIMARY KEY (CusID)
+);
+
+CREATE TABLE CAR (
+    RegNum       VARCHAR(15),
+    Make         VARCHAR(50),
+    Model        VARCHAR(50),
+    Manufacture  YEAR,
+    CusID        VARCHAR(10),
+    CONSTRAINT PK_Car PRIMARY KEY (RegNum),
+    CONSTRAINT FK_Car_Customer FOREIGN KEY (CusID)
+        REFERENCES CUSTOMER(CusID)
+);
+
+CREATE TABLE MECHANIC (
+    MechanicID   VARCHAR(10),
+    Forename     VARCHAR(50),
+    Surname      VARCHAR(50),
+    PhoneNo      VARCHAR(20),
+    Grade        VARCHAR(20),
+    CONSTRAINT PK_Mechanic PRIMARY KEY (MechanicID)
+);
+
+CREATE TABLE SERVICE (
+    ServiceID        VARCHAR(10),
+    DropOffDate      DATE,
+    DropOffTime      TIME,
+    WorkDescription  VARCHAR(500),
+    Mileage          INT,
+    DateOfNextService DATE,
+    RegNum           VARCHAR(15),
+    CONSTRAINT PK_Service PRIMARY KEY (ServiceID),
+    CONSTRAINT FK_Service_Car FOREIGN KEY (RegNum)
+        REFERENCES CAR(RegNum)
+);
+
+CREATE TABLE PERFORMS (
+    ServiceID   VARCHAR(10),
+    MechanicID  VARCHAR(10),
+    TimeOfService    Time,
+    CONSTRAINT PK_Performs PRIMARY KEY (ServiceID, MechanicID),
+    CONSTRAINT FK_Performs_Service FOREIGN KEY (ServiceID)
+        REFERENCES SERVICE(ServiceID),
+    CONSTRAINT FK_Performs_Mechanic FOREIGN KEY (MechanicID)
+        REFERENCES MECHANIC(MechanicID)
+);
+
+
+
+INSERT INTO CUSTOMER (CusID, Forename, Surname, Email, PhoneNo) VALUES
+('D13-101', 'Bette', 'Davis', 'bette.davis@ulster.ac.uk', '41728003'),
+('D13-203', 'Cary', 'Grant', 'biggary@yahoo.com', '+44417654321'),
+('D13-42', 'Humphrey', 'Bogart', 'bogieh@gmail.com', '07782751839'),
+('D13-R93', 'John', 'Wayne', NULL, '02890112233'),
+('D14-38', 'Katharine', 'Hepburn', 'kath_hep29@hotmail.com', NULL),
+('D17-022', 'Marilyn', 'Monroe', 'marilyn@hotmail.com', '+88487618356732'),
+('D17-080', 'Orson', 'Welles', 'welles.orson@ulster.ac.uk', '08989736126'),
+('R180-05', 'Vivien', 'Leigh', 'viv.leigh38@gmail.com', '02890289675'),
+('D13-51', 'Ingrid', 'Bergman', 'IngridB@hotmail.com', '66419887654'),
+('D13-306', 'William', 'Holden', 'billyho66@yahoo.com', '+38198322843'),
+('L231-12', 'Rita', 'Hayworth', 'ritah99@outlook.com', '077709873980'),
+('D13-R45', 'James', 'Stewart', 'jimmy_stew@qub.ac.uk', '08770987654'),
+('D14-025', 'James', 'Dean', 'deenj@outlook.com', '+447780276405'),
+('D14-16', 'Rock', 'Hudson', 'rockyh@hotmail.com', NULL),
+('D14-V17', 'Tony', 'Curtis', 't.curtis@yahoo.com', NULL),
+('L231-47', 'Elvis', 'Presley', 'elvisp@yahoo.com', NULL),
+('L231-05', 'Burt', 'Lancaster', NULL, '+447781904569'),
+('D17-945', 'Frank', 'Sinatra', NULL, '08870286004'),
+('D17-043', 'Deborah', 'Kerr', NULL, '02890672593'),
+('R180-61', 'Elizabeth', 'Taylor', NULL, '+442891785397'),
+('R180-32', 'Susan', 'Hayward', 'susan.hayward@yahoo.com', NULL),
+('D17-R14', 'Lana', 'Turner', 'lana.turner@yahoo.com', NULL),
+('L231-44', 'Omar', 'Sharif', 'sharifo18@hotmail.com', '00447880708090'),
+('D17-047', 'Natalie', 'Wood', 'nattiewood@outlook.com', NULL),
+('D14-V77', 'Doris', 'Day', 'd.day67@hotmail.com', '+447879929761'),
+('D13-R71', 'Sean', 'Connery', 'connery.sean007@outlook.com', NULL);
+
+
+INSERT INTO CAR (RegNum, Make, Model, Manufacture, CusID) VALUES
+('R99 YRK', 'BMW', '6 Series Gran Coupe', 2019, 'L231-12'),
+('T779 OLI', 'Ford', 'Fiesta 1.25 Zetec', 2016, 'D13-R45'),
+('BEZ 8826', 'Toyota', 'Corolla', 2015, 'D13-51'),
+('G5 T77', 'Dacia', 'Duster', 2017, 'D13-306'),
+('SEZ 5629', 'Skoda', 'Superb', 2009, 'D13-R93'),
+('STR 9378', 'Skoda', NULL, NULL, 'D14-025'),
+('F6 Y886', 'Skoda', 'Superb', 2018, 'D14-16'),
+('YR3 67', 'Vauxhall', 'Corsa-e', 2019, 'D14-V17'), 
+('DYR 87', 'Toyota', 'Corolla', 2016, 'L231-47'),
+('SWT 9930', 'Dacia', 'Duster', 2018, 'L231-05'),
+('D89 Y6', 'Alfa Romeo', 'Alfasud', 2016, 'D17-945'),
+('Y4 T87', 'Subaru', 'Impreza', 2017, 'D17-043'),
+('JEZ 7719', 'Dacia', NULL, 2018, 'R180-61'), 
+('MEW 783', 'Ford', 'Focus', 2017, 'R180-32'),
+('JEA 991', 'Volvo', 'V70', 2018, 'D17-R14'),
+('B56 Y34', 'Vauxhall', 'Astra', 2017, 'L231-44'),
+('FET 6821', 'Nissan', 'Qashqai Visia', 2018, 'D14-38'), 
+('B82 T56', 'Skoda', 'Superb', 2017, 'D14-V77'),
+('CEZ 563', 'Volkswagen', 'Golf', NULL, 'D13-R71'),
+('AF56 WWJ', 'Volkswagen', 'Golf', 2014, 'D13-203'),
+('BJI 111', 'Vauxhall', 'Astra', 2016, 'D13-101'),
+('LV59 OTP', 'Volkswagen', 'Polo', 2015, 'D13-42'),
+('MEZ 8086', 'Subaru', 'Impreza', 2017, 'D14-38'),
+('GRZ 6511', 'Subaru', 'Outback', 2018, 'D17-022'),
+('DCZ 1844', 'Nissan', 'Qashqai Visia', 2008, 'D17-080'),
+('VIM 8955', 'Skoda', 'Superb', 2016, 'R180-05'),
+('OEZ 1872', 'Alfa Romeo', 'Alfasud', 2014, 'D13-101'),
+('D268 YCF', 'Audi', 'A8 TFSI e', 2020, 'D13-51'),
+('CJ16 WED', 'Vauxhall', 'Corsa-e', 2020, 'D13-306'),
+('W85 TTF', 'Nissan', 'Micra', 2017, 'D17-022'),
+('LLZ 9362', 'Volkswagen', 'Golf', 2018, 'D13-306'),
+('WVG 673', 'Volvo', 'V90', 2019, 'D17-080');
+
+
+
+INSERT INTO SERVICE (
+    ServiceID,
+    DropOffDate,
+    DropOffTime,
+    WorkDescription,
+    Mileage,
+    DateOfNextService,
+    RegNum
+)
+VALUES
+('S2006-101', '2020-06-17', '08:30:00', 'MOT check-up', 45461, '2021-06-21', 'BJI 111'),
+('S2006-102', '2020-06-17', '14:30:00', 'MOT check-up', 75712, '2021-06-20', 'AF56 WWJ'),
+('S2006-103', '2020-06-17', '08:00:00', 'Other - Wheel bearing - front passengers side', 49904, '2021-06-18', 'LV59 OTP'),
+('S2006-104', '2020-06-17', '07:30:00', 'Other - Not going into third gear. All other gears are okay.', 135312, '2021-06-21', 'SEZ 5629'),
+('S2006-105', '2020-06-17', '08:15:00', 'Annual service', 31446, '2021-06-19', 'MEZ 8086'),
+('S2006-106', '2020-06-18', '16:30:00', 'Other - Rattle in the front suspension', 21043, '2021-06-21', 'GRZ 6511'),
+('S2006-107', '2020-06-18', '08:30:00', 'MOT check-up', 142958, '2021-06-18', 'DCZ 1844'),
+('S2006-108', '2020-06-18', '08:00:00', 'MOT check-up', 25077, '2021-06-19', 'VIM 8955'),
+('S2006-109', '2020-06-19', '08:30:00', 'Other - Oil leak - looks major', 85602, '2021-06-21', 'OEZ 1872'),
+('S2006-110', '2020-06-19', '08:45:00', 'Other - Loses power going up hills. Can not go over 50 mph', 9362, '2021-06-21', 'D268 YCF'),
+('S2006-111', '2020-06-19', '08:30:00', 'Other - Air conditioning not working', 5903, '2021-06-19', 'CJ16 WED'),
+('S2006-112', '2020-06-19', '08:30:00', 'Other - Grinding noise from the brakes and whirring noise from the front.', 34943, '2021-06-23', 'W85 TTF'),
+('S2006-113', '2020-06-19', '08:30:00', 'Annual service', 15033, '2021-06-21', 'LLZ 9362'),
+('S2006-114', '2020-06-20', '16:45:00', 'Other - high pitched whistling noise coming from the front.', 7034, '2021-06-21', 'WVG 673'),
+('S2006-115', '2020-06-20', '08:30:00', 'Other - Filled with diesel - should have been petrol! Will need collected.', 4766, NULL, 'R99 YRK'),
+('S2006-116', '2020-06-20', '12:30:00', 'MOT check-up', 21641, '2021-06-22', 'T779 OLI'),
+('S2006-117', '2020-06-20', '08:15:00', 'Other - Front tyres are wearing away on the inside. Wire is showing.', 94006, '2021-06-20', 'BEZ 8826'),
+('S2006-118', '2020-06-22', '08:30:00', 'Annual service', 42743, '2021-06-24', 'G5 T77'),
+('S2006-119', '2020-06-22', '08:30:00', 'Other - Same problem as before - worked for a while, but now not going into first or third gear.', 135394, '2021-06-21', 'SEZ 5629'),
+('S2006-120', '2020-06-22', '10:30:00', 'MOT check-up', 63092, '2021-06-22', 'STR 9378'),
+('S2006-121', '2020-06-23', '08:30:00', 'Annual service', 18932, '2021-06-25', 'F6 Y886'),
+('S2006-122', '2020-06-23', '09:00:00', 'Annual service', 11037, '2021-06-25', 'YR3 67'),
+('S2006-123', '2020-06-23', '16:15:00', 'MOT check-up', 48841, '2021-06-23', 'DYR 87'),
+('S2006-124', '2020-06-23', '08:30:00', 'Annual service', 20026, '2021-06-24', 'SWT 9930'),
+('S2006-125', '2020-06-24', '12:15:00', 'MOT check-up', 31604, NULL, 'D89 Y6'),
+('S2006-126', '2020-06-24', '08:15:00', 'Other - front suspension has collapsed.', 36480, NULL, 'Y4 T87'),
+('S2006-127', '2020-06-24', '08:30:00', 'MOT check-up', 84629, '2021-06-24', 'JEZ 7719'),
+('S2006-128', '2020-06-24', '08:00:00', 'Other - Power steering not working. Very hard to turn the steering wheel.', 22030, '2020-12-09', 'MEW 783'),
+('S2006-129', '2020-06-24', '14:30:00', 'Annual service', 11729, '2020-06-25', 'JEA 991'),
+('S2006-130', '2020-06-24', '08:00:00', 'Annual service', 51815, '2020-06-13', 'B56 Y34'),
+('S2006-131', '2020-06-25', '07:45:00', 'Annual service', 18037, '2020-06-30', 'FET 6821'),
+('S2006-132', '2020-06-25', '08:15:00', 'Other - none of the lights are working', 37104, NULL, 'B82 T56'),
+('S2006-133', '2020-06-25', '16:30:00', 'MOT check-up', 71402, '2021-06-25', 'CEZ 563'),
+('S2006-134', '2020-06-25', '08:30:00', 'Other - Car not starting', 76537, '2021-06-20', 'AF56 WWJ'),
+('S2006-135', '2020-06-25', '14:30:00', 'Other - Now there are grinding sounds from gearbox!!!', 135576, '2021-06-21', 'SEZ 5629');
+
+
+INSERT INTO MECHANIC (MechanicID, Forename, Surname, PhoneNo, Grade)
+VALUES
+('E9274','Tim','Berners-Lee','+442890469927','Trainee'),
+('E1037','Edgar F.','Codd','07882751331','Mechanic'),
+('E7291','Tony','Hoare','+44717689275','Apprentice'),
+('E4470','Ada','Lovelace','07811304671','Mechanic'),
+('E2045','Grace','Hopper','+447880496206','Apprentice'),
+('E0392','Edsger','Dijkstra','07751839368','Senior Mechanic'),
+('E2648','Alan','Turing','02890568482','Apprentice');
+
+
+
+INSERT INTO PERFORMS (ServiceID, MechanicID, TimeOfService)
+VALUES
+('S2006-101','E9274','03:15:00'),
+('S2006-101','E1037','00:45:00'),
+('S2006-102','E7291','04:00:00'),
+('S2006-102','E4470','00:30:00'),
+('S2006-103','E2045','03:30:00'),
+('S2006-103','E1037','06:20:00'),
+('S2006-103','E0392','01:10:00'),
+('S2006-104','E9274','02:25:00'),
+('S2006-104','E4470','09:25:00'),
+('S2006-104','E1037','05:15:00'),
+('S2006-105','E2045','04:20:00'),
+('S2006-105','E0392','01:00:00'),
+('S2006-106','E9274','05:20:00'),
+('S2006-106','E1037','03:15:00'),
+('S2006-107','E9274','01:15:00'),
+('S2006-107','E1037','04:35:00'),
+('S2006-108','E2648','03:35:00'),
+('S2006-108','E4470','03:35:00'),
+('S2006-109','E7291','04:25:00'),
+('S2006-109','E0392','06:20:00'),
+('S2006-109','E1037','01:15:00'),
+('S2006-110','E2648','02:15:00'),
+('S2006-110','E0392','10:15:00'),
+('S2006-110','E1037','10:15:00'),
+('S2006-111','E2045','05:00:00'),
+('S2006-112','E2045','01:45:00'),
+('S2006-112','E4470','08:05:00'),
+('S2006-112','E0392','06:35:00'),
+('S2006-113','E7291','03:30:00'),
+('S2006-113','E4470','03:55:00'),
+('S2006-114','E7291','03:15:00'),
+('S2006-114','E4470','03:20:00'),
+('S2006-114','E1037','02:15:00'),
+('S2006-115','E9274','05:35:00'),
+('S2006-115','E1037','05:35:00'),
+('S2006-116','E2045','03:45:00'),
+('S2006-116','E1037','04:15:00'),
+('S2006-117','E7291','01:15:00'),
+('S2006-117','E4470','02:35:00'),
+('S2006-118','E9274','03:20:00'),
+('S2006-118','E0392','00:50:00'),
+('S2006-119','E9274','02:35:00'),
+('S2006-119','E1037','04:40:00'),
+('S2006-120','E2648','03:30:00'),
+('S2006-120','E4470','02:50:00'),
+('S2006-121','E2045',NULL),
+('S2006-122','E7291',NULL),
+('S2006-123','E2648',NULL),
+('S2006-124','E9274',NULL),
+('S2006-125','E2648',NULL),
+('S2006-127','E7291',NULL),
+('S2006-129','E2045',NULL),
+('S2006-130','E9274',NULL),
+('S2006-131','E2648',NULL),
+('S2006-133','E7291',NULL);
+
